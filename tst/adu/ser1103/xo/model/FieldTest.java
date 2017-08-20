@@ -1,5 +1,6 @@
 package adu.ser1103.xo.model;
 
+import adu.ser1103.xo.model.exceptions.InvalidPointException;
 import org.junit.Test;
 
 import java.awt.*;
@@ -25,7 +26,66 @@ public class FieldTest {
         final Figure actualFigure = field.getFigure(inputPoint);
 
         assertEquals(inputFigure, actualFigure);
+    }
+
+    @Test
+    public void testGetFigureWhenFigureIsNotSet() throws Exception {
+        final Field field = new Field();
+        final Point inputPoint = new Point(0,0);
+
+        final Figure actualFigure = field.getFigure(inputPoint);
+
+        assertNull(actualFigure);
 
     }
 
+    @Test
+    public void testGetFigureWhenXLessThanZero() throws Exception {
+        final Field field = new Field();
+        final Point inputPoint = new Point(-1,0);
+
+        try {
+            field.getFigure(inputPoint);
+            fail();
+        } catch (final InvalidPointException e) {}
+
+    }
+
+
+    @Test
+    public void testGetFigureWhenYLessThanZero() throws Exception {
+        final Field field = new Field();
+        final Point inputPoint = new Point(0,-1);
+
+        try {
+            field.getFigure(inputPoint);
+            fail();
+        } catch (final InvalidPointException e) {}
+
+    }
+
+    @Test
+    public void testGetFigureWhenXMoreThanSize() throws Exception {
+        final Field field = new Field();
+        final Point inputPoint = new Point(field.getSize()+1,0);
+
+        try {
+            field.getFigure(inputPoint);
+            fail();
+        } catch (final InvalidPointException e) {}
+
+    }
+
+
+    @Test
+    public void testGetFigureWhenYMoreThanSize() throws Exception {
+        final Field field = new Field();
+        final Point inputPoint = new Point(0,field.getSize()+1);
+
+        try {
+            field.getFigure(inputPoint);
+            fail();
+        } catch (final InvalidPointException e) {}
+
+    }
 }
